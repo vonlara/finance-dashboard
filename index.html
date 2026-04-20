@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- ✅ Firebase PRIMEIRO, antes de tudo -->
+  <!-- Firebase PRIMEIRO -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -31,9 +31,6 @@
           <label>E-mail</label>
           <input type="email" id="login-usuario" placeholder="exemplo@email.com" autocomplete="off">
         </div>
-        <div class="input-wrap">
-        </div>
-        
         <div class="input-wrap">
           <label>Senha</label>
           <input type="password" id="login-senha" placeholder="No mínimo 6 caracteres">
@@ -80,43 +77,13 @@
           <label>Mês/Ano</label>
           <input type="month" id="mes-ano">
         </div>
-        <div class="input-wrap">
+        <div class="input-wrap full">
           <label>Tipo</label>
           <select id="tipo">
             <option value="entrada">Entrada</option>
             <option value="saida">Saída</option>
           </select>
         </div>
-        <!-- CATEGORIAS-->
-        <div class="input-wrap">
-  <label>Tipo</label>
-  <select id="tipo">
-    <option value="entrada">Entrada</option>
-    <option value="saida">Saída</option>
-  </select>
-</div>
-
-<div class="input-wrap">
-  <label>Categoria</label>
-  <select id="categoria">
-    <optgroup label="Entradas">
-      <option value="Salário">Salário</option>
-      <option value="Freelance">Freelance</option>
-      <option value="Investimentos">Investimentos</option>
-      <option value="Outros (entrada)">Outros</option>
-    </optgroup>
-    <optgroup label="Saídas">
-      <option value="Alimentação">Alimentação</option>
-      <option value="Moradia">Moradia</option>
-      <option value="Transporte">Transporte</option>
-      <option value="Saúde">Saúde</option>
-      <option value="Educação">Educação</option>
-      <option value="Lazer">Lazer</option>
-      <option value="Assinaturas">Assinaturas</option>
-      <option value="Outros (saída)">Outros</option>
-    </optgroup>
-  </select>
-</div>
         <button class="btn-add" onclick="adicionarTransacao()">
           <span>+</span> Adicionar transação
         </button>
@@ -168,7 +135,7 @@
           </div>
         </div>
         <div class="grafico-card">
-          <div class="grafico-titulo">Gastos por categorias</div>
+          <div class="grafico-titulo">Maiores gastos</div>
           <div style="position:relative; height:260px;">
             <canvas id="chart-categorias"></canvas>
           </div>
@@ -178,7 +145,6 @@
 
   </main>
 
-  <!-- ✅ script.js UMA SÓ VEZ, por último -->
   <script src="script.js"></script>
 
 </body>
