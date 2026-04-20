@@ -436,3 +436,9 @@ function formatarMesAno(mesAno) {
   const nomes = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
   return nomes[parseInt(mes, 10) - 1] + "/" + ano;
 }
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById("tela-login").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+  }
+});
