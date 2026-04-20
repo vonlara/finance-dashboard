@@ -16,12 +16,6 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ... restante do seu código (transacoes, funções, etc)
-
-// INICIALIZA
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
 
 // ESTADO GLOBAL
 let transacoes = [];
