@@ -8,12 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Firebase PRIMEIRO -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-  <!-- Chart.js depois -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
 <body>
@@ -67,7 +64,12 @@
       <div class="form-card">
         <div class="input-wrap full">
           <label>Descrição</label>
-          <input type="text" id="descricao" placeholder="Ex: Salário, Mercado, Netflix…" maxlength="50" autocomplete="off">
+          <input type="text" id="descricao" placeholder="Ex: Salário João, Mercado, Netflix…" maxlength="50" autocomplete="off">
+        </div>
+        <div class="input-wrap full" style="position:relative;">
+          <label>Grupo <span style="font-size:10px; color:var(--text-muted); text-transform:none; letter-spacing:0;">(opcional — ex: Folha de Pagamento)</span></label>
+          <input type="text" id="grupo" placeholder="Digite ou escolha um grupo existente…" maxlength="40" autocomplete="off" oninput="mostrarSugestoes()" onfocus="mostrarSugestoes()" onblur="setTimeout(fecharSugestoes,150)">
+          <div id="sugestoes-grupo" class="sugestoes-lista hidden"></div>
         </div>
         <div class="input-wrap">
           <label>Valor (R$)</label>
@@ -105,6 +107,11 @@
           <span class="card-label">↓ Saídas</span>
           <span id="total-saidas" class="card-valor">R$ 0,00</span>
         </div>
+        <div class="card card-grupo">
+          <span class="card-label">Maior grupo de gasto</span>
+          <span id="maior-grupo" class="card-valor card-valor-grupo">—</span>
+          <span id="maior-grupo-valor" class="card-grupo-valor"></span>
+        </div>
       </div>
       <div class="lista-topo">
         <h2>Histórico</h2>
@@ -135,7 +142,7 @@
           </div>
         </div>
         <div class="grafico-card">
-          <div class="grafico-titulo">Maiores gastos</div>
+          <div class="grafico-titulo">Maiores gastos por grupo</div>
           <div style="position:relative; height:260px;">
             <canvas id="chart-categorias"></canvas>
           </div>
