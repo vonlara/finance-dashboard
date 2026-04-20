@@ -15,31 +15,26 @@
 
   <!-- TELA DE LOGIN -->
   <div id="tela-login">
-    <div class="login-box">
-      <div class="login-logo">PF</div>
-      <h2 class="login-titulo">Planejamento<br><em>Financeiro</em></h2>
-      <p class="login-sub">Faça login para continuar</p>
+  <div class="login-box">
+    <div class="login-logo">PF</div>
+    <h2 class="login-titulo">Planejamento<br><em>Financeiro</em></h2>
+    <p class="login-sub">Faça login para continuar</p>
 
-      <div class="login-form">
-        <div class="input-wrap">
-          <label>Usuário</label>
-          <input type="text" id="login-usuario" placeholder="Digite seu usuário" autocomplete="off">
-        </div>
-        <div class="input-wrap">
-          <label>Senha</label>
-          <input type="password" id="login-senha" placeholder="Digite sua senha">
-        </div>
-        <p id="login-erro" class="login-erro"></p>
-        <button class="btn-login" onclick="fazerLogin()">Entrar</button>
-        <button class="btn-cadastrar" onclick="cadastrar()">Criar nova conta</button>
-  
-  <p class="login-dica">Use <strong>admin</strong> e <strong>1234</strong> para teste local.</p>
-</div>
-       
+    <div class="login-form">
+      <div class="input-wrap">
+        <label>E-mail</label> <input type="email" id="login-usuario" placeholder="exemplo@email.com" autocomplete="off">
       </div>
+      <div class="input-wrap">
+        <label>Senha</label>
+        <input type="password" id="login-senha" placeholder="No mínimo 6 caracteres">
+      </div>
+      <p id="login-erro" class="login-erro"></p>
+      
+      <button class="btn-login" onclick="fazerLogin()">Entrar</button>
+      <button class="btn-cadastrar" onclick="cadastrar()">Criar nova conta</button>
     </div>
   </div>
-<button onclick="cadastrar()">Criar conta</button>
+</div>
   <!-- APP PRINCIPAL -->
   <main id="app" class="container hidden">
 
