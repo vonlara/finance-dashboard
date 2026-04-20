@@ -33,8 +33,29 @@ let chartBarras = null, chartPizza = null, chartLinha = null;
 // ============================================================
 
 function cadastrar() {
-  console.log("Botão de cadastrar foi clicado!");
-  alert("O JavaScript está funcionando!");
+  const email = document.getElementById("login-usuario").value;
+  const senha = document.getElementById("login-senha").value;
+
+  if (!email || !senha) {
+    alert("Por favor, preencha e-mail e senha.");
+    return;
+  }
+
+  auth.createUserWithEmailAndPassword(email, senha)
+    .then(() => alert("Conta criada com sucesso! Clique em Entrar."))
+    .catch(error => alert("Erro ao cadastrar: " + error.message));
+}
+
+function fazerLogin() {
+  const email = document.getElementById("login-usuario").value;
+  const senha = document.getElementById("login-senha").value;
+  const erroEl = document.getElementById("login-erro");
+
+  auth.signInWithEmailAndPassword(email, senha)
+    .catch(error => {
+      erroEl.textContent = "E-mail ou senha inválidos.";
+      console.error(error);
+    });
 }
 
 function fazerLogout() {
