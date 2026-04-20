@@ -438,21 +438,50 @@ li.saida   .li-valor { color: var(--red); }
   border-color: var(--gold);
   background: var(--gold-dim);
 }
-.grupo-mes { margin-bottom: 1.5rem; }
-.grupo-mes-titulo { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+/* ==========================================
+   HISTÓRICO DE TRANSAÇÕES (tema escuro)
+   ========================================== */
 
-.transacao-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 0.5rem; background: #fff; border: 1px solid #f0f0f0; }
-.transacao-item.entrada { border-left: 3px solid #4ade80; }
-.transacao-item.saida   { border-left: 3px solid #f87171; }
+.grupo-mes { margin-bottom: 1.5rem; }
+
+.grupo-mes-titulo {
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-muted); margin-bottom: .6rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.transacao-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: border-color .2s, transform .15s;
+  animation: fadeIn .25s ease both;
+}
+
+.transacao-item:hover { border-color: var(--border-2); transform: translateX(3px); }
+.transacao-item.entrada { border-left: 3px solid var(--green); }
+.transacao-item.saida   { border-left: 3px solid var(--red); }
 
 .transacao-info { display: flex; flex-direction: column; gap: 2px; }
-.transacao-desc { font-weight: 500; font-size: 0.95rem; }
-.transacao-tipo { font-size: 0.75rem; color: #aaa; }
 
-.transacao-direita { display: flex; align-items: center; gap: 0.75rem; }
-.transacao-valor { font-weight: 600; }
-.transacao-item.entrada .transacao-valor { color: #16a34a; }
-.transacao-item.saida   .transacao-valor { color: #dc2626; }
+.transacao-desc { font-size: 14px; font-weight: 500; color: var(--text); }
 
-.btn-remover { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.85rem; padding: 2px 6px; border-radius: 4px; }
-.btn-remover:hover { background: #fee2e2; color: #dc2626; }
+.transacao-tipo {
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--text-muted); margin-top: 2px;
+}
+
+.transacao-direita { display: flex; align-items: center; gap: .75rem; }
+
+.transacao-valor {
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 700;
+}
+
+.transacao-item.entrada .transacao-valor { color: var(--green); }
+.transacao-item.saida   .transacao-valor { color: var(--red); }
