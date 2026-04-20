@@ -1,5 +1,4 @@
-// CONFIG FIREBASE - Substitua pelos seus dados reais do console
-// CONFIGURAÇÃO REAL DO SEU FIREBASE (Sintaxe compatível com seu código)
+// 1. CONFIGURAÇÃO ÚNICA
 const firebaseConfig = {
   apiKey: "AIzaSyC45d4cvN__in06fdBYgqj9HPYboUDvuaI",
   authDomain: "finance-dashboard-26fdb.firebaseapp.com",
@@ -9,12 +8,18 @@ const firebaseConfig = {
   appId: "1:1071740399561:web:36d7942f115b52e21a0218"
 };
 
-// INICIALIZAÇÃO
+// 2. INICIALIZAÇÃO SEGURA (SEM REPETIÇÕES)
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
-const auth = firebase.auth();
-const db = firebase.firestore();
+
+// Usamos var para permitir que o navegador sobrescreva se necessário, evitando o erro de "already declared"
+var auth = firebase.auth();
+var db = firebase.firestore();
+
+// 3. ESTADO DO APP
+let transacoes = [];
+let usuarioAtual = null;
 
 
 // ESTADO GLOBAL
