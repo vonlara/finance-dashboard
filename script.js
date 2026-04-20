@@ -103,13 +103,14 @@ function adicionarTransacao() {
   const valor = parseFloat(document.getElementById("valor").value);
   const tipo = document.getElementById("tipo").value;
   const mesAno = document.getElementById("mes-ano").value;
+  const categoria = document.getElementById("categoria").value;
 
   if (!descricao || isNaN(valor) || !mesAno) {
     alert("Preencha todos os campos corretamente!");
     return;
   }
 
-  transacoes.push({ descricao, valor, tipo, mesAno });
+  transacoes.push({ descricao, valor, tipo, mesAno, categoria });
   salvarDados();
   renderizarTudo();
 
