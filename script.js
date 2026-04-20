@@ -25,13 +25,12 @@ let usuarioAtual = null;
 let chartBarras = null;
 let chartPizza = null;
 let chartLinha = null;
-let charCategorias = null;
+let chartCategorias = null;
 
 // ==========================================
 // 3. AUTENTICAÇÃO
 // ==========================================
 
-// ✅ cadastrar() apenas UMA VEZ
 function cadastrar() {
   const email = document.getElementById("login-usuario").value;
   const senha = document.getElementById("login-senha").value;
@@ -128,6 +127,7 @@ function mudarAba(nome) {
 
   if (nome === "graficos") renderizarGraficos();
 }
+
 // ==========================================
 // 6. RENDERIZAÇÃO
 // ==========================================
@@ -135,8 +135,6 @@ function mudarAba(nome) {
 function renderizarTudo() {
   atualizarResumo();
   renderizarHistorico();
-
-  // Atualiza badge da aba Transações
   document.getElementById("badge-count").textContent = transacoes.length;
 }
 
@@ -150,7 +148,6 @@ function atualizarResumo() {
     .reduce((acc, t) => acc + t.valor, 0);
 
   const saldo = entradas - saidas;
-
   const fmt = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   document.getElementById("total-entradas").textContent = fmt(entradas);
@@ -189,42 +186,6 @@ function renderizarHistorico() {
             ${t.tipo === "entrada" ? "↑" : "↓"}
             ${t.categoria || (t.tipo === "entrada" ? "Entrada" : "Saída")}
           </span>
-        </div>
-        <div class="transacao-direita">
-          <span class="transacao-valor">${t.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
-          <button class="btn-remover" onclick="removerTransacao(${t.index})">✕</button>
-        </div>
-      </div>
-    `).join("");
-
-    return `
-      <div class="grupo-mes">
-        <div class="grupo-mes-titulo">${nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1)}</div>
-        ${itens}
-      </div>
-    `;
-  }).join("");
-  }
-
-  // Agrupa por mês/ano
-  const grupos = {};
-  transacoes.forEach((t, i) => {
-    if (!grupos[t.mesAno]) grupos[t.mesAno] = [];
-    grupos[t.mesAno].push({ ...t, index: i });
-  });
-
-  // Ordena meses do mais recente para o mais antigo
-  const mesesOrdenados = Object.keys(grupos).sort((a, b) => b.localeCompare(a));
-
-  container.innerHTML = mesesOrdenados.map(mes => {
-    const [ano, m] = mes.split("-");
-    const nomeMes = new Date(ano, m - 1).toLocaleString("pt-BR", { month: "long", year: "numeric" });
-
-    const itens = grupos[mes].map(t => `
-      <div class="transacao-item ${t.tipo}">
-        <div class="transacao-info">
-          <span class="transacao-desc">${t.descricao}</span>
-          <span class="transacao-tipo">${t.tipo === "entrada" ? "↑ Entrada" : "↓ Saída"}</span>
         </div>
         <div class="transacao-direita">
           <span class="transacao-valor">${t.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
@@ -342,7 +303,7 @@ function renderizarGraficos() {
     }
   });
 
-  // ✅ NOVO — Gráfico de categorias de saída
+  // Gráfico de categorias de saída
   const categoriasSaida = {};
   transacoes.filter(t => t.tipo === "saida" && t.categoria).forEach(t => {
     categoriasSaida[t.categoria] = (categoriasSaida[t.categoria] || 0) + t.valor;
