@@ -1,9 +1,22 @@
 // CONFIG FIREBASE - Substitua pelos seus dados reais do console
+// CONFIGURAÇÃO REAL DO SEU FIREBASE (Sintaxe compatível com seu código)
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  projectId: "SEU_PROJETO",
+  apiKey: "AIzaSyC45d4cvN__in06fdBYgqj9HPYboUDvuaI",
+  authDomain: "finance-dashboard-26fdb.firebaseapp.com",
+  projectId: "finance-dashboard-26fdb",
+  storageBucket: "finance-dashboard-26fdb.firebasestorage.app",
+  messagingSenderId: "1071740399561",
+  appId: "1:1071740399561:web:36d7942f115b52e21a0218"
 };
+
+// INICIALIZAÇÃO
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// ... restante do seu código (transacoes, funções, etc)
 
 // INICIALIZA
 firebase.initializeApp(firebaseConfig);
