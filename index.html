@@ -7,6 +7,13 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ✅ Firebase PRIMEIRO, antes de tudo -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <!-- Chart.js depois -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
 <body>
@@ -15,26 +22,26 @@
 
   <!-- TELA DE LOGIN -->
   <div id="tela-login">
-  <div class="login-box">
-    <div class="login-logo">PF</div>
-    <h2 class="login-titulo">Planejamento<br><em>Financeiro</em></h2>
-    <p class="login-sub">Faça login para continuar</p>
-
-    <div class="login-form">
-      <div class="input-wrap">
-        <label>E-mail</label> <input type="email" id="login-usuario" placeholder="exemplo@email.com" autocomplete="off">
+    <div class="login-box">
+      <div class="login-logo">PF</div>
+      <h2 class="login-titulo">Planejamento<br><em>Financeiro</em></h2>
+      <p class="login-sub">Faça login para continuar</p>
+      <div class="login-form">
+        <div class="input-wrap">
+          <label>E-mail</label>
+          <input type="email" id="login-usuario" placeholder="exemplo@email.com" autocomplete="off">
+        </div>
+        <div class="input-wrap">
+          <label>Senha</label>
+          <input type="password" id="login-senha" placeholder="No mínimo 6 caracteres">
+        </div>
+        <p id="login-erro" class="login-erro"></p>
+        <button class="btn-login" onclick="fazerLogin()">Entrar</button>
+        <button class="btn-cadastrar" onclick="cadastrar()">Criar nova conta</button>
       </div>
-      <div class="input-wrap">
-        <label>Senha</label>
-        <input type="password" id="login-senha" placeholder="No mínimo 6 caracteres">
-      </div>
-      <p id="login-erro" class="login-erro"></p>
-      
-      <button class="btn-login" onclick="fazerLogin()">Entrar</button>
-      <button class="btn-cadastrar" onclick="cadastrar()">Criar nova conta</button>
     </div>
   </div>
-</div>
+
   <!-- APP PRINCIPAL -->
   <main id="app" class="container hidden">
 
@@ -47,7 +54,6 @@
       <h1 class="headline">Planejamento financeiro,<br><em>sob controle.</em></h1>
     </header>
 
-    <!-- ABAS -->
     <nav class="tabs">
       <button class="tab active" onclick="mudarAba('principal')">Principal</button>
       <button class="tab" onclick="mudarAba('transacoes')">
@@ -86,7 +92,6 @@
 
     <!-- ABA 2: TRANSAÇÕES -->
     <div id="aba-transacoes" class="aba hidden">
-
       <div class="resumo-grid">
         <div class="card card-saldo">
           <span class="card-label">Saldo total</span>
@@ -101,50 +106,41 @@
           <span id="total-saidas" class="card-valor">R$ 0,00</span>
         </div>
       </div>
-
       <div class="lista-topo">
         <h2>Histórico</h2>
         <button class="btn-limpar" onclick="limparTudo()">Limpar tudo</button>
       </div>
-
       <div id="historico"></div>
     </div>
 
     <!-- ABA 3: GRÁFICOS -->
     <div id="aba-graficos" class="aba hidden">
       <div class="graficos-wrap">
-
         <div class="grafico-card">
           <div class="grafico-titulo">Entradas vs Saídas por mês</div>
           <div style="position:relative; height:260px;">
-            <canvas id="chart-barras" role="img" aria-label="Gráfico de barras com entradas e saídas por mês"></canvas>
+            <canvas id="chart-barras"></canvas>
           </div>
         </div>
-
         <div class="grafico-card">
           <div class="grafico-titulo">Distribuição geral</div>
           <div style="position:relative; height:240px;">
-            <canvas id="chart-pizza" role="img" aria-label="Gráfico de pizza com proporção entradas e saídas"></canvas>
+            <canvas id="chart-pizza"></canvas>
           </div>
         </div>
-
         <div class="grafico-card">
           <div class="grafico-titulo">Evolução do saldo</div>
           <div style="position:relative; height:240px;">
-            <canvas id="chart-linha" role="img" aria-label="Gráfico de linha com evolução do saldo acumulado"></canvas>
+            <canvas id="chart-linha"></canvas>
           </div>
         </div>
-
       </div>
     </div>
 
   </main>
 
+  <!-- ✅ script.js UMA SÓ VEZ, por último -->
   <script src="script.js"></script>
+
 </body>
 </html>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-<script src="script.js"></script>
