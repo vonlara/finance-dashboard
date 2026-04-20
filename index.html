@@ -32,26 +32,8 @@
           <input type="email" id="login-usuario" placeholder="exemplo@email.com" autocomplete="off">
         </div>
         <div class="input-wrap">
-  <label>Categoria</label>
-  <select id="categoria">
-    <optgroup label="Entradas">
-      <option value="Salário">Salário</option>
-      <option value="Freelance">Freelance</option>
-      <option value="Investimentos">Investimentos</option>
-      <option value="Outros (entrada)">Outros</option>
-    </optgroup>
-    <optgroup label="Saídas">
-      <option value="Alimentação">Alimentação</option>
-      <option value="Moradia">Moradia</option>
-      <option value="Transporte">Transporte</option>
-      <option value="Saúde">Saúde</option>
-      <option value="Educação">Educação</option>
-      <option value="Lazer">Lazer</option>
-      <option value="Assinaturas">Assinaturas</option>
-      <option value="Outros (saída)">Outros</option>
-    </optgroup>
-  </select>
-</div>
+        </div>
+        
         <div class="input-wrap">
           <label>Senha</label>
           <input type="password" id="login-senha" placeholder="No mínimo 6 caracteres">
@@ -105,6 +87,36 @@
             <option value="saida">Saída</option>
           </select>
         </div>
+        <!-- CATEGORIAS-->
+        <div class="input-wrap">
+  <label>Tipo</label>
+  <select id="tipo">
+    <option value="entrada">Entrada</option>
+    <option value="saida">Saída</option>
+  </select>
+</div>
+
+<div class="input-wrap">
+  <label>Categoria</label>
+  <select id="categoria">
+    <optgroup label="Entradas">
+      <option value="Salário">Salário</option>
+      <option value="Freelance">Freelance</option>
+      <option value="Investimentos">Investimentos</option>
+      <option value="Outros (entrada)">Outros</option>
+    </optgroup>
+    <optgroup label="Saídas">
+      <option value="Alimentação">Alimentação</option>
+      <option value="Moradia">Moradia</option>
+      <option value="Transporte">Transporte</option>
+      <option value="Saúde">Saúde</option>
+      <option value="Educação">Educação</option>
+      <option value="Lazer">Lazer</option>
+      <option value="Assinaturas">Assinaturas</option>
+      <option value="Outros (saída)">Outros</option>
+    </optgroup>
+  </select>
+</div>
         <button class="btn-add" onclick="adicionarTransacao()">
           <span>+</span> Adicionar transação
         </button>
