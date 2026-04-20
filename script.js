@@ -164,8 +164,45 @@ function renderizarHistorico() {
   const container = document.getElementById("historico");
 
   if (transacoes.length === 0) {
-    container.innerHTML = "<p style='color:#888; text-align:center; padding:2rem;'>Nenhuma transação ainda.</p>";
+    container.innerHTML = "<p class='historico-vazio'>Nenhuma transação ainda.</p>";
     return;
+  }
+
+  const grupos = {};
+  transacoes.forEach((t, i) => {
+    if (!grupos[t.mesAno]) grupos[t.mesAno] = [];
+    grupos[t.mesAno].push({ ...t, index: i });
+  });
+
+  const mesesOrdenados = Object.keys(grupos).sort((a, b) => b.localeCompare(a));
+
+  container.innerHTML = mesesOrdenados.map(mes => {
+    const [ano, m] = mes.split("-");
+    const nomeMes = new Date(ano, m - 1).toLocaleString("pt-BR", { month: "long", year: "numeric" });
+
+    const itens = grupos[mes].map(t => `
+      <div class="transacao-item ${t.tipo}">
+        <div class="transacao-info">
+          <span class="transacao-desc">${t.descricao}</span>
+          <span class="transacao-tipo">
+            ${t.tipo === "entrada" ? "↑" : "↓"}
+            ${t.categoria || (t.tipo === "entrada" ? "Entrada" : "Saída")}
+          </span>
+        </div>
+        <div class="transacao-direita">
+          <span class="transacao-valor">${t.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+          <button class="btn-remover" onclick="removerTransacao(${t.index})">✕</button>
+        </div>
+      </div>
+    `).join("");
+
+    return `
+      <div class="grupo-mes">
+        <div class="grupo-mes-titulo">${nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1)}</div>
+        ${itens}
+      </div>
+    `;
+  }).join("");
   }
 
   // Agrupa por mês/ano
@@ -246,14 +283,18 @@ function renderizarGraficos() {
     data: {
       labels,
       datasets: [
-        { label: "Entradas", data: entPorMes, backgroundColor: "#4ade80" },
-        { label: "Saídas",   data: saiPorMes, backgroundColor: "#f87171" }
+        { label: "Entradas", data: entPorMes, backgroundColor: "#3ecf8e" },
+        { label: "Saídas",   data: saiPorMes, backgroundColor: "#f06565" }
       ]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top" } } }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "top", labels: { color: "#f0ede8" } } },
+      scales: { x: { ticks: { color: "#7a7a85" } }, y: { ticks: { color: "#7a7a85" } } }
+    }
   });
 
-  // Gráfico de pizza
+  // Gráfico de pizza — entradas vs saídas
   const totalEnt = transacoes.filter(t => t.tipo === "entrada").reduce((a, t) => a + t.valor, 0);
   const totalSai = transacoes.filter(t => t.tipo === "saida").reduce((a, t) => a + t.valor, 0);
 
@@ -262,9 +303,12 @@ function renderizarGraficos() {
     type: "doughnut",
     data: {
       labels: ["Entradas", "Saídas"],
-      datasets: [{ data: [totalEnt, totalSai], backgroundColor: ["#4ade80", "#f87171"] }]
+      datasets: [{ data: [totalEnt, totalSai], backgroundColor: ["#3ecf8e", "#f06565"] }]
     },
-    options: { responsive: true, maintainAspectRatio: false }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "top", labels: { color: "#f0ede8" } } }
+    }
   });
 
   // Gráfico de linha — evolução do saldo
@@ -284,12 +328,42 @@ function renderizarGraficos() {
       datasets: [{
         label: "Saldo acumulado",
         data: saldoPorMes,
-        borderColor: "#818cf8",
-        backgroundColor: "rgba(129,140,248,0.15)",
+        borderColor: "#e8c96a",
+        backgroundColor: "rgba(232,201,106,0.1)",
         fill: true,
         tension: 0.4
       }]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top" } } }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "top", labels: { color: "#f0ede8" } } },
+      scales: { x: { ticks: { color: "#7a7a85" } }, y: { ticks: { color: "#7a7a85" } } }
+    }
   });
+
+  // ✅ NOVO — Gráfico de categorias de saída
+  const categoriasSaida = {};
+  transacoes.filter(t => t.tipo === "saida" && t.categoria).forEach(t => {
+    categoriasSaida[t.categoria] = (categoriasSaida[t.categoria] || 0) + t.valor;
+  });
+
+  const coresCategorias = ["#f06565","#e8c96a","#3ecf8e","#818cf8","#fb923c","#38bdf8","#f472b6","#a3e635"];
+
+  if (Object.keys(categoriasSaida).length > 0) {
+    if (chartCategorias) chartCategorias.destroy();
+    chartCategorias = new Chart(document.getElementById("chart-categorias"), {
+      type: "doughnut",
+      data: {
+        labels: Object.keys(categoriasSaida),
+        datasets: [{
+          data: Object.values(categoriasSaida),
+          backgroundColor: coresCategorias
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: "right", labels: { color: "#f0ede8", font: { size: 12 } } } }
+      }
+    });
+  }
 }
