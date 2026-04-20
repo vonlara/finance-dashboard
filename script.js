@@ -25,6 +25,7 @@ let usuarioAtual = null;
 let chartBarras = null;
 let chartPizza = null;
 let chartLinha = null;
+let charCategorias = null;
 
 // ==========================================
 // 3. AUTENTICAÇÃO
