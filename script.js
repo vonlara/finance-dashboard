@@ -1,4 +1,6 @@
-// 1. CONFIGURAÇÃO ÚNICA
+// ==========================================
+// 1. CONFIGURAÇÃO E INICIALIZAÇÃO ÚNICA
+// ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyC45d4cvN__in06fdBYgqj9HPYboUDvuaI",
   authDomain: "finance-dashboard-26fdb.firebaseapp.com",
@@ -8,25 +10,42 @@ const firebaseConfig = {
   appId: "1:1071740399561:web:36d7942f115b52e21a0218"
 };
 
-// 2. INICIALIZAÇÃO SEGURA (SEM REPETIÇÕES)
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 
-// Usamos var para permitir que o navegador sobrescreva se necessário, evitando o erro de "already declared"
+// Usamos var para evitar o erro de "already declared" caso o script recarregue
 var auth = firebase.auth();
 var db = firebase.firestore();
 
-// 3. ESTADO DO APP
+// ==========================================
+// 2. ESTADO GLOBAL (APENAS UMA VEZ)
+// ==========================================
 let transacoes = [];
 let usuarioAtual = null;
+let chartBarras = null;
+let chartPizza = null;
+let chartLinha = null;
 
+// ==========================================
+// 3. FUNÇÕES (cadastrar, fazerLogin, etc...)
+// ==========================================
 
-// ESTADO GLOBAL
-let transacoes = [];
-let usuarioAtual = null;
-let chartBarras = null, chartPizza = null, chartLinha = null;
+function cadastrar() {
+  const email = document.getElementById("login-usuario").value;
+  const senha = document.getElementById("login-senha").value;
 
+  if (!email || !senha) {
+    alert("Preencha e-mail e senha.");
+    return;
+  }
+
+  auth.createUserWithEmailAndPassword(email, senha)
+    .then(() => alert("Conta criada! Agora clique em Entrar."))
+    .catch(error => alert("Erro: " + error.message));
+}
+
+// ... continue com o restante do seu código ...
 // ============================================================
 // AUTENTICAÇÃO
 // ============================================================
