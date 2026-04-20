@@ -55,14 +55,8 @@ function fazerLogin() {
       erroEl.textContent = "Email ou senha inválidos.";
     });
 }
-
 function fazerLogout() {
-  document.getElementById("app").classList.add("hidden");
-  document.getElementById("tela-login").classList.remove("hidden");
-  document.getElementById("login-usuario").value = "";
-  document.getElementById("login-senha").value   = "";
-  document.getElementById("login-erro").textContent = "";
-  mudarAba("principal");
+  auth.signOut();
 }
 
 // Permitir Enter no login
