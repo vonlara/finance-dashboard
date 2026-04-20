@@ -430,7 +430,23 @@ function formatarMesAno(mesAno) {
   const nomes = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
   return nomes[parseInt(mes, 10) - 1] + "/" + ano;
 }
+let usuarioAtual = null;
+
 auth.onAuthStateChanged(user => {
+  if (user) {
+    usuarioAtual = user.uid;
+
+    document.getElementById("tela-login").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+
+    carregarDados();
+  } else {
+    usuarioAtual = null;
+
+    document.getElementById("app").classList.add("hidden");
+    document.getElementById("tela-login").classList.remove("hidden");
+  }
+});
   if (user) {
     document.getElementById("tela-login").classList.add("hidden");
     document.getElementById("app").classList.remove("hidden");
