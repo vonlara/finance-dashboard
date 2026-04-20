@@ -438,3 +438,21 @@ li.saida   .li-valor { color: var(--red); }
   border-color: var(--gold);
   background: var(--gold-dim);
 }
+.grupo-mes { margin-bottom: 1.5rem; }
+.grupo-mes-titulo { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+
+.transacao-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 0.5rem; background: #fff; border: 1px solid #f0f0f0; }
+.transacao-item.entrada { border-left: 3px solid #4ade80; }
+.transacao-item.saida   { border-left: 3px solid #f87171; }
+
+.transacao-info { display: flex; flex-direction: column; gap: 2px; }
+.transacao-desc { font-weight: 500; font-size: 0.95rem; }
+.transacao-tipo { font-size: 0.75rem; color: #aaa; }
+
+.transacao-direita { display: flex; align-items: center; gap: 0.75rem; }
+.transacao-valor { font-weight: 600; }
+.transacao-item.entrada .transacao-valor { color: #16a34a; }
+.transacao-item.saida   .transacao-valor { color: #dc2626; }
+
+.btn-remover { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.85rem; padding: 2px 6px; border-radius: 4px; }
+.btn-remover:hover { background: #fee2e2; color: #dc2626; }
