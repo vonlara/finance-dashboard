@@ -25,19 +25,21 @@ let chartLinha  = null;
 // LOGIN / LOGOUT
 // ============================================================
 function fazerLogin() {
-  const usuario = document.getElementById("login-usuario").value.trim();
-  const senha   = document.getElementById("login-senha").value;
-  const erroEl  = document.getElementById("login-erro");
+  const email = document.getElementById("login-usuario").value;
+  const senha = document.getElementById("login-senha").value;
+  const erroEl = document.getElementById("login-erro");
 
-  if (usuario === USUARIO_CORRETO && senha === SENHA_CORRETA) {
-    document.getElementById("tela-login").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-    erroEl.textContent = "";
-    carregarDados();
-    renderizarTudo();
-  } else {
-    erroEl.textContent = "Usuário ou senha incorretos.";
-  }
+  auth.signInWithEmailAndPassword(email, senha)
+    .then(() => {
+      document.getElementById("tela-login").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+      erroEl.textContent = "";
+      carregarDados();
+      renderizarTudo();
+    })
+    .catch(() => {
+      erroEl.textContent = "Email ou senha inválidos.";
+    });
 }
 
 function fazerLogout() {
