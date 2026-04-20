@@ -1,3 +1,14 @@
+// CONFIG FIREBASE
+const firebaseConfig = {
+  apiKey: "COLE_AQUI",
+  authDomain: "COLE_AQUI",
+  projectId: "COLE_AQUI",
+};
+
+// INICIALIZA
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
 // ============================================================
 // CONSTANTES E ESTADO
 // ============================================================
