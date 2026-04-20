@@ -20,7 +20,21 @@ let transacoes = [];
 let chartBarras = null;
 let chartPizza  = null;
 let chartLinha  = null;
+// ============================================================
+// CADASTRAR
+// ============================================================
+function cadastrar() {
+  const email = document.getElementById("login-usuario").value;
+  const senha = document.getElementById("login-senha").value;
 
+  auth.createUserWithEmailAndPassword(email, senha)
+    .then(() => {
+      alert("Conta criada com sucesso!");
+    })
+    .catch(error => {
+      alert(error.message);
+    });
+}
 // ============================================================
 // LOGIN / LOGOUT
 // ============================================================
