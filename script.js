@@ -1,5 +1,5 @@
 // ==========================================
-// 1. CONFIGURAÇÃO E INICIALIZAÇÃO ÚNICA
+// 1. CONFIGURAÇÃO E INICIALIZAÇÃO
 // ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyC45d4cvN__in06fdBYgqj9HPYboUDvuaI",
@@ -11,15 +11,14 @@ const firebaseConfig = {
 };
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 }
 
-// Usamos var para evitar o erro de "already declared" caso o script recarregue
 var auth = firebase.auth();
 var db = firebase.firestore();
 
 // ==========================================
-// 2. ESTADO GLOBAL (APENAS UMA VEZ)
+// 2. ESTADO GLOBAL
 // ==========================================
 let transacoes = [];
 let usuarioAtual = null;
@@ -28,28 +27,10 @@ let chartPizza = null;
 let chartLinha = null;
 
 // ==========================================
-// 3. FUNÇÕES (cadastrar, fazerLogin, etc...)
+// 3. AUTENTICAÇÃO
 // ==========================================
 
-function cadastrar() {
-  const email = document.getElementById("login-usuario").value;
-  const senha = document.getElementById("login-senha").value;
-
-  if (!email || !senha) {
-    alert("Preencha e-mail e senha.");
-    return;
-  }
-
-  auth.createUserWithEmailAndPassword(email, senha)
-    .then(() => alert("Conta criada! Agora clique em Entrar."))
-    .catch(error => alert("Erro: " + error.message));
-}
-
-// ... continue com o restante do seu código ...
-// ============================================================
-// AUTENTICAÇÃO
-// ============================================================
-
+// ✅ cadastrar() apenas UMA VEZ
 function cadastrar() {
   const email = document.getElementById("login-usuario").value;
   const senha = document.getElementById("login-senha").value;
@@ -80,7 +61,6 @@ function fazerLogout() {
   auth.signOut();
 }
 
-// Observador de Login (Controla o que aparece na tela)
 auth.onAuthStateChanged(user => {
   const telaLogin = document.getElementById("tela-login");
   const appPrincipal = document.getElementById("app");
@@ -97,9 +77,9 @@ auth.onAuthStateChanged(user => {
   }
 });
 
-// ============================================================
-// DADOS (FIRESTORE)
-// ============================================================
+// ==========================================
+// 4. FIRESTORE
+// ==========================================
 
 function salvarDados() {
   if (!usuarioAtual) return;
@@ -114,9 +94,9 @@ function carregarDados() {
   });
 }
 
-// ============================================================
-// LÓGICA DO APP
-// ============================================================
+// ==========================================
+// 5. LÓGICA DO APP
+// ==========================================
 
 function adicionarTransacao() {
   const descricao = document.getElementById("descricao").value.trim();
@@ -132,7 +112,7 @@ function adicionarTransacao() {
   transacoes.push({ descricao, valor, tipo, mesAno });
   salvarDados();
   renderizarTudo();
-  
+
   document.getElementById("descricao").value = "";
   document.getElementById("valor").value = "";
 }
@@ -142,13 +122,7 @@ function mudarAba(nome) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
 
   document.getElementById("aba-" + nome).classList.remove("hidden");
-  
-  // Ativa a tab correta visualmente
   event.currentTarget.classList.add("active");
 
   if (nome === "graficos") renderizarGraficos();
 }
-
-// Adicione aqui suas funções de renderizarTudo, atualizarResumo, 
-// renderizarHistorico e renderizarGraficos que você já tinha, 
-// apenas garantindo que não fiquem chaves { } sobrando entre elas.
