@@ -78,6 +78,14 @@ document.addEventListener("DOMContentLoaded", () => {
 // PERSISTÊNCIA — localStorage
 // ============================================================
 function salvarDados() {
+  if (!usuarioAtual) return;
+
+  db.collection("usuarios")
+    .doc(usuarioAtual)
+    .set({
+      transacoes: transacoes
+    });
+} {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(transacoes));
 }
 
