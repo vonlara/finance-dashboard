@@ -34,12 +34,7 @@ let chartCategorias = null;
 function cadastrar() {
   const email = document.getElementById("login-usuario").value;
   const senha = document.getElementById("login-senha").value;
-
-  if (!email || !senha) {
-    alert("Por favor, preencha e-mail e senha.");
-    return;
-  }
-
+  if (!email || !senha) { alert("Por favor, preencha e-mail e senha."); return; }
   auth.createUserWithEmailAndPassword(email, senha)
     .then(() => alert("Conta criada com sucesso! Clique em Entrar."))
     .catch(error => alert("Erro ao cadastrar: " + error.message));
@@ -49,22 +44,15 @@ function fazerLogin() {
   const email = document.getElementById("login-usuario").value;
   const senha = document.getElementById("login-senha").value;
   const erroEl = document.getElementById("login-erro");
-
   auth.signInWithEmailAndPassword(email, senha)
-    .catch(error => {
-      erroEl.textContent = "E-mail ou senha inválidos.";
-      console.error(error);
-    });
+    .catch(error => { erroEl.textContent = "E-mail ou senha inválidos."; console.error(error); });
 }
 
-function fazerLogout() {
-  auth.signOut();
-}
+function fazerLogout() { auth.signOut(); }
 
 auth.onAuthStateChanged(user => {
   const telaLogin = document.getElementById("tela-login");
   const appPrincipal = document.getElementById("app");
-
   if (user) {
     usuarioAtual = user.uid;
     telaLogin.classList.add("hidden");
@@ -95,7 +83,40 @@ function carregarDados() {
 }
 
 // ==========================================
-// 5. LÓGICA DO APP
+// 5. AUTOCOMPLETE DE GRUPOS
+// ==========================================
+
+function getGrupos() {
+  const grupos = transacoes
+    .map(t => t.grupo)
+    .filter(g => g && g.trim() !== "");
+  return [...new Set(grupos)].sort();
+}
+
+function mostrarSugestoes() {
+  const input = document.getElementById("grupo").value.toLowerCase();
+  const lista = document.getElementById("sugestoes-grupo");
+  const grupos = getGrupos().filter(g => g.toLowerCase().includes(input));
+
+  if (grupos.length === 0) { lista.classList.add("hidden"); return; }
+
+  lista.innerHTML = grupos.map(g =>
+    `<div class="sugestao-item" onmousedown="selecionarGrupo('${g.replace(/'/g, "\\'")}')">${g}</div>`
+  ).join("");
+  lista.classList.remove("hidden");
+}
+
+function selecionarGrupo(nome) {
+  document.getElementById("grupo").value = nome;
+  fecharSugestoes();
+}
+
+function fecharSugestoes() {
+  document.getElementById("sugestoes-grupo").classList.add("hidden");
+}
+
+// ==========================================
+// 6. LÓGICA DO APP
 // ==========================================
 
 function adicionarTransacao() {
@@ -103,32 +124,32 @@ function adicionarTransacao() {
   const valor = parseFloat(document.getElementById("valor").value);
   const tipo = document.getElementById("tipo").value;
   const mesAno = document.getElementById("mes-ano").value;
+  const grupo = document.getElementById("grupo").value.trim();
 
   if (!descricao || isNaN(valor) || !mesAno) {
     alert("Preencha todos os campos corretamente!");
     return;
   }
 
-  transacoes.push({ descricao, valor, tipo, mesAno });
+  transacoes.push({ descricao, valor, tipo, mesAno, grupo });
   salvarDados();
   renderizarTudo();
 
   document.getElementById("descricao").value = "";
   document.getElementById("valor").value = "";
+  document.getElementById("grupo").value = "";
 }
 
 function mudarAba(nome) {
   document.querySelectorAll(".aba").forEach(a => a.classList.add("hidden"));
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-
   document.getElementById("aba-" + nome).classList.remove("hidden");
   event.currentTarget.classList.add("active");
-
   if (nome === "graficos") renderizarGraficos();
 }
 
 // ==========================================
-// 6. RENDERIZAÇÃO
+// 7. RENDERIZAÇÃO
 // ==========================================
 
 function renderizarTudo() {
@@ -138,14 +159,8 @@ function renderizarTudo() {
 }
 
 function atualizarResumo() {
-  const entradas = transacoes
-    .filter(t => t.tipo === "entrada")
-    .reduce((acc, t) => acc + t.valor, 0);
-
-  const saidas = transacoes
-    .filter(t => t.tipo === "saida")
-    .reduce((acc, t) => acc + t.valor, 0);
-
+  const entradas = transacoes.filter(t => t.tipo === "entrada").reduce((acc, t) => acc + t.valor, 0);
+  const saidas = transacoes.filter(t => t.tipo === "saida").reduce((acc, t) => acc + t.valor, 0);
   const saldo = entradas - saidas;
   const fmt = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
@@ -155,6 +170,24 @@ function atualizarResumo() {
   const elSaldo = document.getElementById("saldo");
   elSaldo.textContent = fmt(saldo);
   elSaldo.className = "card-valor " + (saldo > 0 ? "saldo-positivo" : saldo < 0 ? "saldo-negativo" : "saldo-neutro");
+
+  // Card maior grupo de gasto
+  const gastosPorGrupo = {};
+  transacoes.filter(t => t.tipo === "saida" && t.grupo).forEach(t => {
+    gastosPorGrupo[t.grupo] = (gastosPorGrupo[t.grupo] || 0) + t.valor;
+  });
+
+  const elGrupo = document.getElementById("maior-grupo");
+  const elGrupoValor = document.getElementById("maior-grupo-valor");
+
+  if (Object.keys(gastosPorGrupo).length > 0) {
+    const top = Object.entries(gastosPorGrupo).sort((a, b) => b[1] - a[1])[0];
+    elGrupo.textContent = top[0];
+    elGrupoValor.textContent = fmt(top[1]);
+  } else {
+    elGrupo.textContent = "—";
+    elGrupoValor.textContent = "";
+  }
 }
 
 function renderizarHistorico() {
@@ -181,9 +214,10 @@ function renderizarHistorico() {
       <div class="transacao-item ${t.tipo}">
         <div class="transacao-info">
           <span class="transacao-desc">${t.descricao}</span>
-          <span class="transacao-tipo">
-            ${t.tipo === "entrada" ? "↑ Entrada" : "↓ Saída"}
-          </span>
+          <div style="display:flex; align-items:center; gap:6px; margin-top:3px; flex-wrap:wrap;">
+            <span class="transacao-tipo">${t.tipo === "entrada" ? "↑ Entrada" : "↓ Saída"}</span>
+            ${t.grupo ? `<span class="tag-grupo">${t.grupo}</span>` : ""}
+          </div>
         </div>
         <div class="transacao-direita">
           <span class="transacao-valor">${t.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
@@ -216,7 +250,7 @@ function limparTudo() {
 }
 
 // ==========================================
-// 7. GRÁFICOS
+// 8. GRÁFICOS
 // ==========================================
 
 function renderizarGraficos() {
@@ -236,7 +270,6 @@ function renderizarGraficos() {
     return new Date(ano, mes - 1).toLocaleString("pt-BR", { month: "short", year: "2-digit" });
   });
 
-  // Gráfico de barras
   if (chartBarras) chartBarras.destroy();
   chartBarras = new Chart(document.getElementById("chart-barras"), {
     type: "bar",
@@ -254,7 +287,6 @@ function renderizarGraficos() {
     }
   });
 
-  // Gráfico de pizza — entradas vs saídas
   const totalEnt = transacoes.filter(t => t.tipo === "entrada").reduce((a, t) => a + t.valor, 0);
   const totalSai = transacoes.filter(t => t.tipo === "saida").reduce((a, t) => a + t.valor, 0);
 
@@ -271,7 +303,6 @@ function renderizarGraficos() {
     }
   });
 
-  // Gráfico de linha — evolução do saldo
   let saldoAcumulado = 0;
   const saldoPorMes = meses.map(m => {
     const ent = transacoes.filter(t => t.mesAno === m && t.tipo === "entrada").reduce((a, t) => a + t.valor, 0);
@@ -301,13 +332,14 @@ function renderizarGraficos() {
     }
   });
 
-  // Gráfico de maiores gastos por descrição (top 6 saídas)
-  const gastosPorDesc = {};
+  // Gráfico por grupo (saídas com grupo) + sem grupo agrupados por descrição
+  const gastosPorGrupo = {};
   transacoes.filter(t => t.tipo === "saida").forEach(t => {
-    gastosPorDesc[t.descricao] = (gastosPorDesc[t.descricao] || 0) + t.valor;
+    const chave = t.grupo && t.grupo.trim() !== "" ? t.grupo : t.descricao;
+    gastosPorGrupo[chave] = (gastosPorGrupo[chave] || 0) + t.valor;
   });
 
-  const top6 = Object.entries(gastosPorDesc)
+  const top6 = Object.entries(gastosPorGrupo)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6);
 
@@ -319,10 +351,7 @@ function renderizarGraficos() {
       type: "doughnut",
       data: {
         labels: top6.map(i => i[0]),
-        datasets: [{
-          data: top6.map(i => i[1]),
-          backgroundColor: coresCategorias
-        }]
+        datasets: [{ data: top6.map(i => i[1]), backgroundColor: coresCategorias }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
