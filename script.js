@@ -103,14 +103,13 @@ function adicionarTransacao() {
   const valor = parseFloat(document.getElementById("valor").value);
   const tipo = document.getElementById("tipo").value;
   const mesAno = document.getElementById("mes-ano").value;
-  const categoria = document.getElementById("categoria").value;
 
   if (!descricao || isNaN(valor) || !mesAno) {
     alert("Preencha todos os campos corretamente!");
     return;
   }
 
-  transacoes.push({ descricao, valor, tipo, mesAno, categoria });
+  transacoes.push({ descricao, valor, tipo, mesAno });
   salvarDados();
   renderizarTudo();
 
@@ -183,8 +182,7 @@ function renderizarHistorico() {
         <div class="transacao-info">
           <span class="transacao-desc">${t.descricao}</span>
           <span class="transacao-tipo">
-            ${t.tipo === "entrada" ? "↑" : "↓"}
-            ${t.categoria || (t.tipo === "entrada" ? "Entrada" : "Saída")}
+            ${t.tipo === "entrada" ? "↑ Entrada" : "↓ Saída"}
           </span>
         </div>
         <div class="transacao-direita">
@@ -303,22 +301,26 @@ function renderizarGraficos() {
     }
   });
 
-  // Gráfico de categorias de saída
-  const categoriasSaida = {};
-  transacoes.filter(t => t.tipo === "saida" && t.categoria).forEach(t => {
-    categoriasSaida[t.categoria] = (categoriasSaida[t.categoria] || 0) + t.valor;
+  // Gráfico de maiores gastos por descrição (top 6 saídas)
+  const gastosPorDesc = {};
+  transacoes.filter(t => t.tipo === "saida").forEach(t => {
+    gastosPorDesc[t.descricao] = (gastosPorDesc[t.descricao] || 0) + t.valor;
   });
 
-  const coresCategorias = ["#f06565","#e8c96a","#3ecf8e","#818cf8","#fb923c","#38bdf8","#f472b6","#a3e635"];
+  const top6 = Object.entries(gastosPorDesc)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
 
-  if (Object.keys(categoriasSaida).length > 0) {
+  const coresCategorias = ["#f06565","#e8c96a","#3ecf8e","#818cf8","#fb923c","#38bdf8"];
+
+  if (top6.length > 0) {
     if (chartCategorias) chartCategorias.destroy();
     chartCategorias = new Chart(document.getElementById("chart-categorias"), {
       type: "doughnut",
       data: {
-        labels: Object.keys(categoriasSaida),
+        labels: top6.map(i => i[0]),
         datasets: [{
-          data: Object.values(categoriasSaida),
+          data: top6.map(i => i[1]),
           backgroundColor: coresCategorias
         }]
       },
