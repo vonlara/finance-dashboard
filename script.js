@@ -126,3 +126,169 @@ function mudarAba(nome) {
 
   if (nome === "graficos") renderizarGraficos();
 }
+// ==========================================
+// 6. RENDERIZAÇÃO
+// ==========================================
+
+function renderizarTudo() {
+  atualizarResumo();
+  renderizarHistorico();
+
+  // Atualiza badge da aba Transações
+  document.getElementById("badge-count").textContent = transacoes.length;
+}
+
+function atualizarResumo() {
+  const entradas = transacoes
+    .filter(t => t.tipo === "entrada")
+    .reduce((acc, t) => acc + t.valor, 0);
+
+  const saidas = transacoes
+    .filter(t => t.tipo === "saida")
+    .reduce((acc, t) => acc + t.valor, 0);
+
+  const saldo = entradas - saidas;
+
+  const fmt = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+  document.getElementById("total-entradas").textContent = fmt(entradas);
+  document.getElementById("total-saidas").textContent = fmt(saidas);
+
+  const elSaldo = document.getElementById("saldo");
+  elSaldo.textContent = fmt(saldo);
+  elSaldo.className = "card-valor " + (saldo > 0 ? "saldo-positivo" : saldo < 0 ? "saldo-negativo" : "saldo-neutro");
+}
+
+function renderizarHistorico() {
+  const container = document.getElementById("historico");
+
+  if (transacoes.length === 0) {
+    container.innerHTML = "<p style='color:#888; text-align:center; padding:2rem;'>Nenhuma transação ainda.</p>";
+    return;
+  }
+
+  // Agrupa por mês/ano
+  const grupos = {};
+  transacoes.forEach((t, i) => {
+    if (!grupos[t.mesAno]) grupos[t.mesAno] = [];
+    grupos[t.mesAno].push({ ...t, index: i });
+  });
+
+  // Ordena meses do mais recente para o mais antigo
+  const mesesOrdenados = Object.keys(grupos).sort((a, b) => b.localeCompare(a));
+
+  container.innerHTML = mesesOrdenados.map(mes => {
+    const [ano, m] = mes.split("-");
+    const nomeMes = new Date(ano, m - 1).toLocaleString("pt-BR", { month: "long", year: "numeric" });
+
+    const itens = grupos[mes].map(t => `
+      <div class="transacao-item ${t.tipo}">
+        <div class="transacao-info">
+          <span class="transacao-desc">${t.descricao}</span>
+          <span class="transacao-tipo">${t.tipo === "entrada" ? "↑ Entrada" : "↓ Saída"}</span>
+        </div>
+        <div class="transacao-direita">
+          <span class="transacao-valor">${t.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+          <button class="btn-remover" onclick="removerTransacao(${t.index})">✕</button>
+        </div>
+      </div>
+    `).join("");
+
+    return `
+      <div class="grupo-mes">
+        <div class="grupo-mes-titulo">${nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1)}</div>
+        ${itens}
+      </div>
+    `;
+  }).join("");
+}
+
+function removerTransacao(index) {
+  if (!confirm("Remover esta transação?")) return;
+  transacoes.splice(index, 1);
+  salvarDados();
+  renderizarTudo();
+}
+
+function limparTudo() {
+  if (!confirm("Apagar todas as transações?")) return;
+  transacoes = [];
+  salvarDados();
+  renderizarTudo();
+}
+
+// ==========================================
+// 7. GRÁFICOS
+// ==========================================
+
+function renderizarGraficos() {
+  if (transacoes.length === 0) return;
+
+  const meses = [...new Set(transacoes.map(t => t.mesAno))].sort();
+
+  const entPorMes = meses.map(m =>
+    transacoes.filter(t => t.mesAno === m && t.tipo === "entrada").reduce((a, t) => a + t.valor, 0)
+  );
+  const saiPorMes = meses.map(m =>
+    transacoes.filter(t => t.mesAno === m && t.tipo === "saida").reduce((a, t) => a + t.valor, 0)
+  );
+
+  const labels = meses.map(m => {
+    const [ano, mes] = m.split("-");
+    return new Date(ano, mes - 1).toLocaleString("pt-BR", { month: "short", year: "2-digit" });
+  });
+
+  // Gráfico de barras
+  if (chartBarras) chartBarras.destroy();
+  chartBarras = new Chart(document.getElementById("chart-barras"), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        { label: "Entradas", data: entPorMes, backgroundColor: "#4ade80" },
+        { label: "Saídas",   data: saiPorMes, backgroundColor: "#f87171" }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top" } } }
+  });
+
+  // Gráfico de pizza
+  const totalEnt = transacoes.filter(t => t.tipo === "entrada").reduce((a, t) => a + t.valor, 0);
+  const totalSai = transacoes.filter(t => t.tipo === "saida").reduce((a, t) => a + t.valor, 0);
+
+  if (chartPizza) chartPizza.destroy();
+  chartPizza = new Chart(document.getElementById("chart-pizza"), {
+    type: "doughnut",
+    data: {
+      labels: ["Entradas", "Saídas"],
+      datasets: [{ data: [totalEnt, totalSai], backgroundColor: ["#4ade80", "#f87171"] }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  // Gráfico de linha — evolução do saldo
+  let saldoAcumulado = 0;
+  const saldoPorMes = meses.map(m => {
+    const ent = transacoes.filter(t => t.mesAno === m && t.tipo === "entrada").reduce((a, t) => a + t.valor, 0);
+    const sai = transacoes.filter(t => t.mesAno === m && t.tipo === "saida").reduce((a, t) => a + t.valor, 0);
+    saldoAcumulado += ent - sai;
+    return saldoAcumulado;
+  });
+
+  if (chartLinha) chartLinha.destroy();
+  chartLinha = new Chart(document.getElementById("chart-linha"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Saldo acumulado",
+        data: saldoPorMes,
+        borderColor: "#818cf8",
+        backgroundColor: "rgba(129,140,248,0.15)",
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top" } } }
+  });
+}
