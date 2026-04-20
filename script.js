@@ -90,6 +90,20 @@ function salvarDados() {
 }
 
 function carregarDados() {
+  if (!usuarioAtual) return;
+
+  db.collection("usuarios")
+    .doc(usuarioAtual)
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        transacoes = doc.data().transacoes || [];
+      } else {
+        transacoes = [];
+      }
+      renderizarTudo();
+    });
+} {
   const dados = localStorage.getItem(STORAGE_KEY);
   transacoes = dados ? JSON.parse(dados) : [];
 }
