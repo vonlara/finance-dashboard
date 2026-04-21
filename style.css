@@ -120,8 +120,8 @@ body {
 /* ==================== APP ==================== */
 .container {
   position: relative; z-index: 1;
-  max-width: 600px; margin: 0 auto;
-  padding: 2.5rem 1rem 8rem;
+  max-width: 1200px; margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
   overflow: visible;
 }
 
