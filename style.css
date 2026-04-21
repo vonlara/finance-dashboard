@@ -1,464 +1,384 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;500;600&display=swap');
- 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
-:root {
-  --bg:         #0e0f11;
-  --surface:    #16181c;
-  --surface-2:  #1e2026;
-  --border:     rgba(255,255,255,0.07);
-  --border-2:   rgba(255,255,255,0.13);
-  --text:       #f0ede8;
-  --text-muted: #7a7a85;
-  --green:      #3ecf8e;
-  --green-dim:  rgba(62,207,142,0.12);
-  --red:        #f06565;
-  --red-dim:    rgba(240,101,101,0.12);
-  --gold:       #e8c96a;
-  --gold-dim:   rgba(232,201,106,0.12);
-  --radius-sm:  10px;
-  --radius-md:  16px;
-  --radius-lg:  22px;
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'Outfit', sans-serif;
-}
- 
-body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
- 
-.hidden { display: none !important; }
- 
-/* FUNDO DE PONTOS */
-.bg-dots {
-  position: fixed; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none; z-index: 0;
-}
- 
-/* ==================== LOGIN ==================== */
-#tela-login {
-  position: fixed; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 100; padding: 1rem;
-}
- 
-.login-box {
-  background: var(--surface);
-  border: 1px solid var(--border-2);
-  border-radius: var(--radius-lg);
-  padding: 2.5rem 2rem;
-  width: 100%; max-width: 380px;
-  text-align: center;
-  animation: slideDown .4s ease both;
-}
- 
-.login-logo {
-  width: 52px; height: 52px;
-  background: var(--gold); color: #111;
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 16px; letter-spacing: .05em;
-  margin: 0 auto 1.25rem;
-}
- 
-.login-titulo {
-  font-family: var(--font-display);
-  font-size: 1.8rem; font-weight: 700;
-  line-height: 1.2; margin-bottom: .5rem;
-}
- 
-.login-titulo em { font-style: italic; color: var(--gold); }
- 
-.login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 1.75rem; }
- 
-.login-form { display: flex; flex-direction: column; gap: 12px; text-align: left; }
- 
-.login-erro {
-  font-size: 12px; color: var(--red);
-  text-align: center; min-height: 16px;
-}
- 
-.btn-login {
-  background: var(--gold); color: #111;
-  border: none; border-radius: var(--radius-sm);
-  padding: 13px; font-family: var(--font-body);
-  font-size: 15px; font-weight: 600; cursor: pointer;
-  transition: opacity .15s, box-shadow .15s;
-  margin-top: 4px;
-}
- 
-.btn-login:hover { opacity: .88; box-shadow: 0 4px 20px rgba(232,201,106,.3); }
- 
-.login-dica {
-  font-size: 12px; color: var(--text-muted);
-  text-align: center; margin-top: 4px;
-}
- 
-.login-dica strong { color: var(--text); }
- 
-/* ==================== APP ==================== */
-.container {
-  position: relative; z-index: 1;
-  max-width: 600px; margin: 0 auto;
-  padding: 2.5rem 1rem 4rem;
-}
- 
-.header { margin-bottom: 1.75rem; animation: slideDown .5s ease both; }
- 
-.header-top {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 1.25rem;
-}
- 
-.logo-mark {
-  width: 36px; height: 36px;
-  background: var(--gold); color: #111;
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 600; font-size: 12px; letter-spacing: .05em; flex-shrink: 0;
-}
- 
-.header-subtitle {
-  font-size: 13px; color: var(--text-muted);
-  letter-spacing: .06em; text-transform: uppercase; flex: 1;
-}
- 
-.btn-sair {
-  background: none; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 6px 14px;
-  font-family: var(--font-body); font-size: 12px;
-  color: var(--text-muted); cursor: pointer;
-  transition: color .15s, border-color .15s;
-}
- 
-.btn-sair:hover { color: var(--red); border-color: var(--red); }
- 
-.headline {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
-  font-weight: 700; line-height: 1.15;
-}
- 
-.headline em { font-style: italic; color: var(--gold); }
- 
-/* ==================== ABAS ==================== */
-.tabs {
-  display: flex; gap: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 5px; margin-bottom: 1.5rem;
-  animation: slideDown .5s .05s ease both;
-}
- 
-.tab {
-  flex: 1; padding: 10px 12px;
-  background: none; border: none;
-  border-radius: calc(var(--radius-lg) - 4px);
-  font-family: var(--font-body); font-size: 13px; font-weight: 500;
-  color: var(--text-muted); cursor: pointer;
-  transition: background .2s, color .2s;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-}
- 
-.tab:hover { color: var(--text); }
- 
-.tab.active {
-  background: var(--surface-2);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
- 
-.tab-badge {
-  background: var(--gold); color: #111;
-  font-size: 10px; font-weight: 700;
-  padding: 1px 6px; border-radius: 99px;
-  min-width: 18px; text-align: center;
-}
- 
-.aba { animation: fadeIn .2s ease both; }
- 
-/* ==================== FORMULÁRIO ==================== */
-.form-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
- 
-.input-wrap { display: flex; flex-direction: column; gap: 6px; }
-.input-wrap.full { grid-column: 1 / -1; }
- 
-.input-wrap label {
-  font-size: 11px; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--text-muted); font-weight: 500;
-}
- 
-.form-card input,
-.form-card select,
-.login-form input {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 11px 14px;
-  font-family: var(--font-body); font-size: 14px; color: var(--text);
-  outline: none; width: 100%;
-  transition: border-color .2s, box-shadow .2s;
-  -webkit-appearance: none;
-}
- 
-.form-card input::placeholder,
-.login-form input::placeholder { color: var(--text-muted); }
- 
-.form-card input:focus,
-.form-card select:focus,
-.login-form input:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(232,201,106,.1);
-}
- 
-/* fix cor do input type=month */
-input[type="month"]::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor: pointer; }
- 
-.form-card select option { background: var(--surface-2); }
- 
-.btn-add {
-  grid-column: 1 / -1;
-  background: var(--gold); color: #111;
-  border: none; border-radius: var(--radius-sm);
-  padding: 13px; font-family: var(--font-body);
-  font-size: 15px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  transition: opacity .15s, transform .1s, box-shadow .15s;
-}
- 
-.btn-add span { font-size: 20px; font-weight: 300; line-height: 1; }
-.btn-add:hover  { opacity: .88; box-shadow: 0 4px 20px rgba(232,201,106,.3); }
-.btn-add:active { transform: scale(.98); }
- 
-/* ==================== RESUMO ==================== */
-.resumo-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 1.5rem;
-}
- 
-.card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 1.25rem 1.4rem;
-  display: flex; flex-direction: column; gap: 6px;
-  transition: border-color .2s;
-}
- 
-.card:hover { border-color: var(--border-2); }
- 
-.card-saldo {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg,#1a1d24,#1e2330);
-  border-color: rgba(232,201,106,.2); padding: 1.5rem 1.6rem;
-}
- 
-.card-saldo:hover { border-color: rgba(232,201,106,.4); }
- 
-.card-label {
-  font-size: 11px; text-transform: uppercase;
-  letter-spacing: .09em; color: var(--text-muted); font-weight: 500;
-}
- 
-.card-valor {
-  font-family: var(--font-display);
-  font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em;
-}
- 
-.card-saldo .card-valor { font-size: 2.1rem; }
-.card-entrada .card-valor { color: var(--green); }
-.card-saida   .card-valor { color: var(--red); }
-.saldo-positivo { color: var(--green) !important; }
-.saldo-negativo { color: var(--red) !important; }
-.saldo-neutro   { color: var(--text) !important; }
- 
-/* ==================== LISTA ==================== */
-.lista-topo {
-  display: flex; align-items: center;
-  justify-content: space-between; margin-bottom: 1rem;
-}
- 
-.lista-topo h2 {
-  font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;
-}
- 
-.btn-limpar {
-  background: none; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 6px 14px;
-  font-family: var(--font-body); font-size: 12px;
-  color: var(--text-muted); cursor: pointer;
-  transition: color .15s, border-color .15s, background .15s;
-}
- 
-.btn-limpar:hover { color: var(--red); border-color: var(--red); background: var(--red-dim); }
- 
-/* GRUPO POR MÊS */
-.mes-grupo { margin-bottom: 1.5rem; }
- 
-.mes-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: .6rem; padding-bottom: .5rem;
-  border-bottom: 1px solid var(--border);
-}
- 
-.mes-titulo {
-  font-size: 12px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted);
-}
- 
-.mes-saldo {
-  font-family: var(--font-display);
-  font-size: 13px; font-weight: 700;
-}
- 
-.mes-saldo.pos { color: var(--green); }
-.mes-saldo.neg { color: var(--red); }
- 
-ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
- 
-li {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 1rem 1.2rem;
-  display: flex; align-items: center; gap: 14px;
-  transition: border-color .2s, transform .15s;
-  animation: fadeIn .25s ease both;
-}
- 
-li:hover { border-color: var(--border-2); transform: translateX(3px); }
- 
-.li-icone {
-  width: 38px; height: 38px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; flex-shrink: 0;
-}
- 
-li.entrada .li-icone { background: var(--green-dim); color: var(--green); }
-li.saida   .li-icone { background: var(--red-dim);   color: var(--red); }
- 
-.li-info { flex: 1; min-width: 0; }
- 
-.li-descricao {
-  font-size: 14px; font-weight: 500;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
- 
-.li-tipo {
-  font-size: 11px; text-transform: uppercase;
-  letter-spacing: .07em; color: var(--text-muted); margin-top: 2px;
-}
- 
-.li-valor {
-  font-family: var(--font-display);
-  font-size: 15px; font-weight: 700; flex-shrink: 0;
-}
- 
-li.entrada .li-valor { color: var(--green); }
-li.saida   .li-valor { color: var(--red); }
- 
-.btn-remover {
-  background: none; border: none; color: var(--text-muted);
-  cursor: pointer; font-size: 14px;
-  width: 28px; height: 28px; border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  transition: color .15s, background .15s; flex-shrink: 0;
-}
- 
-.btn-remover:hover { color: var(--red); background: var(--red-dim); }
- 
-.historico-vazio {
-  text-align: center; color: var(--text-muted); font-size: 14px;
-  padding: 2.5rem 1rem;
-  border: 1px dashed var(--border); border-radius: var(--radius-lg);
-}
- 
-/* ==================== GRÁFICOS ==================== */
-.graficos-wrap { display: flex; flex-direction: column; gap: 1rem; }
- 
-.grafico-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 1.25rem 1.4rem;
-}
- 
-.grafico-titulo {
-  font-size: 12px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .08em;
-  color: var(--text-muted); margin-bottom: 1rem;
-}
- 
-.sem-dados {
-  text-align: center; color: var(--text-muted);
-  font-size: 13px; padding: 2rem 0;
-}
- 
-/* ==================== ANIMAÇÕES ==================== */
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
- 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateX(-8px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
- 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 99px; }
+// ==========================================
+// 1. CONFIGURAÇÃO E INICIALIZAÇÃO
+// ==========================================
+const firebaseConfig = {
+  apiKey: "AIzaSyC45d4cvN__in06fdBYgqj9HPYboUDvuaI",
+  authDomain: "finance-dashboard-26fdb.firebaseapp.com",
+  projectId: "finance-dashboard-26fdb",
+  storageBucket: "finance-dashboard-26fdb.firebasestorage.app",
+  messagingSenderId: "1071740399561",
+  appId: "1:1071740399561:web:36d7942f115b52e21a0218"
+};
 
-.grupo-mes { margin-bottom: 1.5rem; }
-
-.grupo-mes-titulo {
-  font-size: 12px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .08em;
-  color: var(--text-muted); margin-bottom: .6rem;
-  padding-bottom: .5rem; border-bottom: 1px solid var(--border);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 }
 
-.transacao-item {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 1rem 1.2rem;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 14px; margin-bottom: 7px;
-  transition: border-color .2s, transform .15s;
-  animation: fadeIn .25s ease both;
+var auth = firebase.auth();
+var db = firebase.firestore();
+
+// ==========================================
+// 2. ESTADO GLOBAL
+// ==========================================
+let transacoes = [];
+let usuarioAtual = null;
+let chartBarras = null;
+let chartPizza = null;
+let chartLinha = null;
+let chartCategorias = null;
+
+// ==========================================
+// 3. AUTENTICAÇÃO
+// ==========================================
+
+function cadastrar() {
+  const email = document.getElementById("login-usuario").value;
+  const senha = document.getElementById("login-senha").value;
+  if (!email || !senha) { alert("Por favor, preencha e-mail e senha."); return; }
+  auth.createUserWithEmailAndPassword(email, senha)
+    .then(() => alert("Conta criada com sucesso! Clique em Entrar."))
+    .catch(error => alert("Erro ao cadastrar: " + error.message));
 }
 
-.transacao-item:hover { border-color: var(--border-2); transform: translateX(3px); }
-
-.transacao-info { flex: 1; min-width: 0; }
-
-.transacao-desc {
-  font-size: 14px; font-weight: 500;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  display: block;
+function fazerLogin() {
+  const email = document.getElementById("login-usuario").value;
+  const senha = document.getElementById("login-senha").value;
+  const erroEl = document.getElementById("login-erro");
+  auth.signInWithEmailAndPassword(email, senha)
+    .catch(error => { erroEl.textContent = "E-mail ou senha inválidos."; console.error(error); });
 }
 
-.transacao-tipo {
-  font-size: 11px; text-transform: uppercase;
-  letter-spacing: .07em; color: var(--text-muted);
+function fazerLogout() { auth.signOut(); }
+
+auth.onAuthStateChanged(user => {
+  const telaLogin = document.getElementById("tela-login");
+  const appPrincipal = document.getElementById("app");
+  if (user) {
+    usuarioAtual = user.uid;
+    telaLogin.classList.add("hidden");
+    appPrincipal.classList.remove("hidden");
+    carregarDados();
+  } else {
+    usuarioAtual = null;
+    telaLogin.classList.remove("hidden");
+    appPrincipal.classList.add("hidden");
+  }
+});
+
+// ==========================================
+// 4. FIRESTORE
+// ==========================================
+
+function salvarDados() {
+  if (!usuarioAtual) return;
+  db.collection("usuarios").doc(usuarioAtual).set({ transacoes });
 }
 
-.transacao-direita {
-  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+function carregarDados() {
+  if (!usuarioAtual) return;
+  db.collection("usuarios").doc(usuarioAtual).get().then(doc => {
+    transacoes = doc.exists ? (doc.data().transacoes || []) : [];
+    renderizarTudo();
+  });
 }
 
-.transacao-valor {
-  font-family: var(--font-display);
-  font-size: 15px; font-weight: 700;
+// ==========================================
+// 5. AUTOCOMPLETE DE GRUPOS
+// ==========================================
+
+function getGrupos() {
+  const grupos = transacoes
+    .map(t => t.grupo)
+    .filter(g => g && g.trim() !== "");
+  return [...new Set(grupos)].sort();
 }
 
-.transacao-item.entrada .transacao-valor { color: var(--green); }
-.transacao-item.saida   .transacao-valor { color: var(--red); }
+function mostrarSugestoes() {
+  const input = document.getElementById("grupo").value.toLowerCase();
+  const lista = document.getElementById("sugestoes-grupo");
+  const grupos = getGrupos().filter(g => g.toLowerCase().includes(input));
+
+  if (grupos.length === 0) { lista.classList.add("hidden"); return; }
+
+  lista.innerHTML = grupos.map(g =>
+    `<div class="sugestao-item" onmousedown="selecionarGrupo('${g.replace(/'/g, "\\'")}')">${g}</div>`
+  ).join("");
+  lista.classList.remove("hidden");
+}
+
+function selecionarGrupo(nome) {
+  document.getElementById("grupo").value = nome;
+  fecharSugestoes();
+}
+
+function fecharSugestoes() {
+  document.getElementById("sugestoes-grupo").classList.add("hidden");
+}
+
+// ==========================================
+// 6. LÓGICA DO APP
+// ==========================================
+
+function adicionarTransacao() {
+  const descricao = document.getElementById("descricao").value.trim();
+  const valor = parseFloat(document.getElementById("valor").value);
+  const tipo = document.getElementById("tipo").value;
+  const mesAno = document.getElementById("mes-ano").value;
+  const grupo = document.getElementById("grupo").value.trim();
+
+  if (!descricao || isNaN(valor) || !mesAno) {
+    alert("Preencha todos os campos corretamente!");
+    return;
+  }
+
+  const btn = document.querySelector(".btn-add");
+
+  // Fase 1: shimmer
+  btn.classList.add("loading");
+  btn.innerHTML = `<span style="font-size:18px">⏳</span> Salvando…`;
+
+  setTimeout(() => {
+    transacoes.push({ descricao, valor, tipo, mesAno, grupo });
+    salvarDados();
+    renderizarTudo();
+
+    // Fase 2: sucesso
+    btn.classList.remove("loading");
+    btn.classList.add("sucesso");
+    btn.innerHTML = `<span style="font-size:18px">✓</span> Adicionado!`;
+
+    document.getElementById("descricao").value = "";
+    document.getElementById("valor").value = "";
+    document.getElementById("grupo").value = "";
+
+    // Fase 3: volta ao normal
+    setTimeout(() => {
+      btn.classList.remove("sucesso");
+      btn.style.background = "";
+      btn.innerHTML = `<span>+</span> Adicionar transação`;
+    }, 1200);
+
+  }, 500);
+
+}
+
+function mudarAba(nome) {
+  document.querySelectorAll(".aba").forEach(a => a.classList.add("hidden"));
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("aba-" + nome).classList.remove("hidden");
+  event.currentTarget.classList.add("active");
+  if (nome === "graficos") renderizarGraficos();
+}
+
+// ==========================================
+// 7. RENDERIZAÇÃO
+// ==========================================
+
+function renderizarTudo() {
+  atualizarResumo();
+  renderizarHistorico();
+  document.getElementById("badge-count").textContent = transacoes.length;
+}
+
+function atualizarResumo() {
+  const entradas = transacoes.filter(t => t.tipo === "entrada").reduce((acc, t) => acc + t.valor, 0);
+  const saidas = transacoes.filter(t => t.tipo === "saida").reduce((acc, t) => acc + t.valor, 0);
+  const saldo = entradas - saidas;
+  const fmt = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+  document.getElementById("total-entradas").textContent = fmt(entradas);
+  document.getElementById("total-saidas").textContent = fmt(saidas);
+
+  const elSaldo = document.getElementById("saldo");
+  elSaldo.textContent = fmt(saldo);
+  elSaldo.className = "card-valor " + (saldo > 0 ? "saldo-positivo" : saldo < 0 ? "saldo-negativo" : "saldo-neutro");
+
+  // Card maior grupo de gasto
+  const gastosPorGrupo = {};
+  transacoes.filter(t => t.tipo === "saida" && t.grupo).forEach(t => {
+    gastosPorGrupo[t.grupo] = (gastosPorGrupo[t.grupo] || 0) + t.valor;
+  });
+
+  const elGrupo = document.getElementById("maior-grupo");
+  const elGrupoValor = document.getElementById("maior-grupo-valor");
+
+  if (Object.keys(gastosPorGrupo).length > 0) {
+    const top = Object.entries(gastosPorGrupo).sort((a, b) => b[1] - a[1])[0];
+    elGrupo.textContent = top[0];
+    elGrupoValor.textContent = fmt(top[1]);
+  } else {
+    elGrupo.textContent = "—";
+    elGrupoValor.textContent = "";
+  }
+}
+
+function renderizarHistorico() {
+  const container = document.getElementById("historico");
+
+  if (transacoes.length === 0) {
+    container.innerHTML = "<p class='historico-vazio'>Nenhuma transação ainda.</p>";
+    return;
+  }
+
+  const grupos = {};
+  transacoes.forEach((t, i) => {
+    if (!grupos[t.mesAno]) grupos[t.mesAno] = [];
+    grupos[t.mesAno].push({ ...t, index: i });
+  });
+
+  const mesesOrdenados = Object.keys(grupos).sort((a, b) => b.localeCompare(a));
+
+  container.innerHTML = mesesOrdenados.map(mes => {
+    const [ano, m] = mes.split("-");
+    const nomeMes = new Date(ano, m - 1).toLocaleString("pt-BR", { month: "long", year: "numeric" });
+
+    const itens = grupos[mes].map(t => `
+      <div class="transacao-item ${t.tipo}">
+        <div class="transacao-info">
+          <span class="transacao-desc">${t.descricao}</span>
+          <div style="display:flex; align-items:center; gap:6px; margin-top:3px; flex-wrap:wrap;">
+            <span class="transacao-tipo">${t.tipo === "entrada" ? "↑ Entrada" : "↓ Saída"}</span>
+            ${t.grupo ? `<span class="tag-grupo">${t.grupo}</span>` : ""}
+          </div>
+        </div>
+        <div class="transacao-direita">
+          <span class="transacao-valor">${t.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+          <button class="btn-remover" onclick="removerTransacao(${t.index})">✕</button>
+        </div>
+      </div>
+    `).join("");
+
+    return `
+      <div class="grupo-mes">
+        <div class="grupo-mes-titulo">${nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1)}</div>
+        ${itens}
+      </div>
+    `;
+  }).join("");
+}
+
+function removerTransacao(index) {
+  if (!confirm("Remover esta transação?")) return;
+  transacoes.splice(index, 1);
+  salvarDados();
+  renderizarTudo();
+}
+
+function limparTudo() {
+  if (!confirm("Apagar todas as transações?")) return;
+  transacoes = [];
+  salvarDados();
+  renderizarTudo();
+}
+
+// ==========================================
+// 8. GRÁFICOS
+// ==========================================
+
+function renderizarGraficos() {
+  if (transacoes.length === 0) return;
+
+  const meses = [...new Set(transacoes.map(t => t.mesAno))].sort();
+
+  const entPorMes = meses.map(m =>
+    transacoes.filter(t => t.mesAno === m && t.tipo === "entrada").reduce((a, t) => a + t.valor, 0)
+  );
+  const saiPorMes = meses.map(m =>
+    transacoes.filter(t => t.mesAno === m && t.tipo === "saida").reduce((a, t) => a + t.valor, 0)
+  );
+
+  const labels = meses.map(m => {
+    const [ano, mes] = m.split("-");
+    return new Date(ano, mes - 1).toLocaleString("pt-BR", { month: "short", year: "2-digit" });
+  });
+
+  if (chartBarras) chartBarras.destroy();
+  chartBarras = new Chart(document.getElementById("chart-barras"), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        { label: "Entradas", data: entPorMes, backgroundColor: "#3ecf8e" },
+        { label: "Saídas",   data: saiPorMes, backgroundColor: "#f06565" }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "top", labels: { color: "#f0ede8" } } },
+      scales: { x: { ticks: { color: "#7a7a85" } }, y: { ticks: { color: "#7a7a85" } } }
+    }
+  });
+
+  const totalEnt = transacoes.filter(t => t.tipo === "entrada").reduce((a, t) => a + t.valor, 0);
+  const totalSai = transacoes.filter(t => t.tipo === "saida").reduce((a, t) => a + t.valor, 0);
+
+  if (chartPizza) chartPizza.destroy();
+  chartPizza = new Chart(document.getElementById("chart-pizza"), {
+    type: "doughnut",
+    data: {
+      labels: ["Entradas", "Saídas"],
+      datasets: [{ data: [totalEnt, totalSai], backgroundColor: ["#3ecf8e", "#f06565"] }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "top", labels: { color: "#f0ede8" } } }
+    }
+  });
+
+  let saldoAcumulado = 0;
+  const saldoPorMes = meses.map(m => {
+    const ent = transacoes.filter(t => t.mesAno === m && t.tipo === "entrada").reduce((a, t) => a + t.valor, 0);
+    const sai = transacoes.filter(t => t.mesAno === m && t.tipo === "saida").reduce((a, t) => a + t.valor, 0);
+    saldoAcumulado += ent - sai;
+    return saldoAcumulado;
+  });
+
+  if (chartLinha) chartLinha.destroy();
+  chartLinha = new Chart(document.getElementById("chart-linha"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Saldo acumulado",
+        data: saldoPorMes,
+        borderColor: "#e8c96a",
+        backgroundColor: "rgba(232,201,106,0.1)",
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "top", labels: { color: "#f0ede8" } } },
+      scales: { x: { ticks: { color: "#7a7a85" } }, y: { ticks: { color: "#7a7a85" } } }
+    }
+  });
+
+  // Gráfico por grupo (saídas com grupo) + sem grupo agrupados por descrição
+  const gastosPorGrupo = {};
+  transacoes.filter(t => t.tipo === "saida").forEach(t => {
+    const chave = t.grupo && t.grupo.trim() !== "" ? t.grupo : t.descricao;
+    gastosPorGrupo[chave] = (gastosPorGrupo[chave] || 0) + t.valor;
+  });
+
+  const top6 = Object.entries(gastosPorGrupo)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
+
+  const coresCategorias = ["#f06565","#e8c96a","#3ecf8e","#818cf8","#fb923c","#38bdf8"];
+
+  if (top6.length > 0) {
+    if (chartCategorias) chartCategorias.destroy();
+    chartCategorias = new Chart(document.getElementById("chart-categorias"), {
+      type: "doughnut",
+      data: {
+        labels: top6.map(i => i[0]),
+        datasets: [{ data: top6.map(i => i[1]), backgroundColor: coresCategorias }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: "right", labels: { color: "#f0ede8", font: { size: 12 } } } }
+      }
+    });
+  }
+}
