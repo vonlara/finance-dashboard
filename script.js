@@ -131,13 +131,35 @@ function adicionarTransacao() {
     return;
   }
 
-  transacoes.push({ descricao, valor, tipo, mesAno, grupo });
-  salvarDados();
-  renderizarTudo();
+  const btn = document.querySelector(".btn-add");
 
-  document.getElementById("descricao").value = "";
-  document.getElementById("valor").value = "";
-  document.getElementById("grupo").value = "";
+  // Fase 1: shimmer
+  btn.classList.add("loading");
+  btn.innerHTML = `<span style="font-size:18px">⏳</span> Salvando…`;
+
+  setTimeout(() => {
+    transacoes.push({ descricao, valor, tipo, mesAno, grupo });
+    salvarDados();
+    renderizarTudo();
+
+    // Fase 2: sucesso
+    btn.classList.remove("loading");
+    btn.classList.add("sucesso");
+    btn.innerHTML = `<span style="font-size:18px">✓</span> Adicionado!`;
+
+    document.getElementById("descricao").value = "";
+    document.getElementById("valor").value = "";
+    document.getElementById("grupo").value = "";
+
+    // Fase 3: volta ao normal
+    setTimeout(() => {
+      btn.classList.remove("sucesso");
+      btn.style.background = "";
+      btn.innerHTML = `<span>+</span> Adicionar transação`;
+    }, 1200);
+
+  }, 500);
+
 }
 
 function mudarAba(nome) {
